@@ -5,6 +5,12 @@ class Library
     private List<User> _users = [];
     private List<Book> _books = [];
 
+    public INotificationService NotificationService {get;}
+
+    public Library(INotificationService notificationService){
+        NotificationService = notificationService;
+    }
+
     public void FindBookByTitle(string title)
     {
         var book = _books.FirstOrDefault(i => i.Title.Equals(title, StringComparison.CurrentCultureIgnoreCase));
@@ -33,10 +39,11 @@ class Library
             bool id = _books.Any(item => item.Id == book.Id);
             if (id)
             {
-                throw new Exception($"'{book.Title}' is already existing.");
+                NotificationService.SendNotificationOnFailure($"adding Book '{book.Title}'");
+                return;
             }
             _books.Add(book);
-            Console.WriteLine($"'{book.Title}' has been added successfully!");
+            NotificationService.SendNotificationOnSucess($"Book '{book.Title}'");
 
         }
         catch (Exception e)
@@ -88,10 +95,10 @@ class Library
             bool id = _books.Any(item => item.Id == book.Id);
             if (!id)
             {
-                throw new Exception($"'{book.Title}' is not Found!");
+                NotificationService.SendNotificationOnFailure($"adding Book '{book.Title}'");
             }
             _books.Remove(book);
-            Console.WriteLine($"'{book.Title}' has deleted successfully!");
+            NotificationService.SendNotificationOnSucess($"Book '{book.Title}'");
 
         }
         catch (Exception e)

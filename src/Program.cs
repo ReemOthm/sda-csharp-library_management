@@ -35,40 +35,47 @@ internal class Program
         var book19 = new Book("The Iliad");
         var book20 = new Book("Anna Karenina");
 
-        var library = new Library();
+        var emailService = new EmailNotificationService();
+        var smsService = new SMSNotificationService();
+
+        var libraryWithEmail = new Library(emailService);
+        var libraryWithSMS = new Library(smsService);
 
         // Adding Books
-        library.AddBook(book1);
-        library.AddBook(book1);
-        library.AddBook(book2);
-        library.AddBook(book3);
-        library.AddBook(book4);
+        libraryWithEmail.AddBook(book1);
+        libraryWithEmail.AddBook(book1);
+        libraryWithEmail.AddBook(book2);
+        libraryWithEmail.AddBook(book3);
+        libraryWithEmail.AddBook(book4);
 
-        library.AddUser(user1);
-        library.AddUser(user2);
-        library.AddUser(user3);
-        library.AddUser(user4);
-        library.AddUser(user5);
+        libraryWithSMS.AddBook(book5);
+        libraryWithSMS.AddBook(book6);
+        libraryWithSMS.AddBook(book6);
 
-        library.FindBookByTitle("The Great Gatsby");
-        library.FindBookByTitle("The Great Gatsy");
+        libraryWithEmail.AddUser(user1);
+        libraryWithEmail.AddUser(user2);
+        libraryWithEmail.AddUser(user3);
+        libraryWithEmail.AddUser(user4);
+        libraryWithEmail.AddUser(user5);
 
-        library.FindUserByName("Alice");
-        library.FindUserByName("lice");
+        libraryWithEmail.FindBookByTitle("The Great Gatsby");
+        libraryWithEmail.FindBookByTitle("The Great Gatsy");
+
+        libraryWithEmail.FindUserByName("Alice");
+        libraryWithEmail.FindUserByName("lice");
         
-        library.DeleteUser(user1);
-        library.DeleteUser(user1);
+        libraryWithEmail.DeleteUser(user1);
+        libraryWithEmail.DeleteUser(user1);
         
-        library.DeleteBook(book1);
-        library.DeleteBook(book1);
+        libraryWithEmail.DeleteBook(book1);
+        libraryWithEmail.DeleteBook(book1);
 
-        library.GetAllUsers();
+        Console.WriteLine("\n##########################\n");
+        libraryWithEmail.GetAllUsers();
 
-        Console.WriteLine();
-        Console.WriteLine("##########################");
-        Console.WriteLine();
-        
-        library.GetAllBooks();
+        Console.WriteLine("\n##########################\n");
+
+        libraryWithEmail.GetAllBooks();
 
 
     }
