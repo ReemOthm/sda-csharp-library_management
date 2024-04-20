@@ -13,6 +13,7 @@ internal class Program
         var user8 = new User("Hannah", new DateTime(2024, 8, 1));
         var user9 = new User("Ian");
         var user10 = new User("Julia");
+        var user11 = new User("Alice");
 
         var book1 = new Book("The Great Gatsby", new DateTime(2023, 1, 1));
         var book2 = new Book("1984", new DateTime(2023, 2, 1));
@@ -47,36 +48,45 @@ internal class Program
         libraryWithEmail.AddBook(book2);
         libraryWithEmail.AddBook(book3);
         libraryWithEmail.AddBook(book4);
+        libraryWithEmail.AddBook(book5);
+        libraryWithEmail.AddBook(book6);
+        libraryWithEmail.AddBook(book7);
+        libraryWithEmail.AddBook(book8);
+        libraryWithEmail.AddBook(book9);
+        libraryWithEmail.AddBook(book10);
 
-        libraryWithSMS.AddBook(book5);
-        libraryWithSMS.AddBook(book6);
-        libraryWithSMS.AddBook(book6);
+        var books = libraryWithEmail.GetAllBooks(2, 5);
+        books.ForEach(Console.WriteLine);
 
-        libraryWithEmail.AddUser(user1);
-        libraryWithEmail.AddUser(user2);
-        libraryWithEmail.AddUser(user3);
-        libraryWithEmail.AddUser(user4);
-        libraryWithEmail.AddUser(user5);
+        libraryWithEmail.DeleteBook(book3);
 
-        libraryWithEmail.FindBookByTitle("The Great Gatsby");
-        libraryWithEmail.FindBookByTitle("The Great Gatsy");
+        var foundedBooks = libraryWithEmail.FindBooksByTitle("the");
+        foundedBooks.ForEach(Console.WriteLine);
 
-        libraryWithEmail.FindUserByName("Alice");
-        libraryWithEmail.FindUserByName("lice");
-        
-        libraryWithEmail.DeleteUser(user1);
-        libraryWithEmail.DeleteUser(user1);
-        
-        libraryWithEmail.DeleteBook(book1);
-        libraryWithEmail.DeleteBook(book1);
+        Console.WriteLine($"\n#########################\n");
 
-        Console.WriteLine("\n##########################\n");
-        libraryWithEmail.GetAllUsers();
+        libraryWithSMS.AddUser(user1);
+        libraryWithSMS.AddUser(user2);
+        libraryWithSMS.AddUser(user3);
+        libraryWithSMS.AddUser(user4);
+        libraryWithSMS.AddUser(user5);
+        libraryWithSMS.AddUser(user5);
+        libraryWithSMS.AddUser(user6);
+        libraryWithSMS.AddUser(user7);
+        libraryWithSMS.AddUser(user8);
+        libraryWithSMS.AddUser(user9);
+        libraryWithSMS.AddUser(user10);
+        libraryWithSMS.AddUser(user11);
 
-        Console.WriteLine("\n##########################\n");
+        libraryWithSMS.DeleteUser(user2);
 
-        libraryWithEmail.GetAllBooks();
+        var users = libraryWithSMS.GetAllUsers(1, 5);
+        users.ForEach(Console.WriteLine);
 
+        Console.WriteLine($"\n#########################\n");
+
+        var foundedUsers = libraryWithSMS.FindUsersByName("Alice");
+        foundedUsers.ForEach(Console.WriteLine);
 
     }
 }

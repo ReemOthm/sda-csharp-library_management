@@ -2,36 +2,28 @@ namespace LibraryManagementSystem;
 
 class Library
 {
-    private List<User> _users = [];
-    private List<Book> _books = [];
+    private List<User> _users;
+    private List<Book> _books;
 
-    public INotificationService NotificationService {get;}
+    public INotificationService NotificationService { get; }
 
-    public Library(INotificationService notificationService){
+    public Library(INotificationService notificationService)
+    {
+        _users = new List<User>();
+        _books = new List<Book>();
         NotificationService = notificationService;
     }
 
-    public void FindBookByTitle(string title)
+    public List<Book> FindBooksByTitle(string title)
     {
-        var book = _books.FirstOrDefault(i => i.Title.Equals(title, StringComparison.CurrentCultureIgnoreCase));
-        if (book == null)
-        {
-            Console.WriteLine($"Book '{title}' Can Not Found!");
-            return;
-        }
-        Console.WriteLine(book.ToString());
+        return _books.FindAll(i => i.Title.Contains(title, StringComparison.CurrentCultureIgnoreCase));
     }
 
-    public void FindUserByName(string name)
+    public List<User> FindUsersByName(string name)
     {
-        var user = _users.FirstOrDefault(i => i.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase));
-        if (user == null)
-        {
-            Console.WriteLine($"User '{name}' Can Not Found!");
-            return;
-        }
-        Console.WriteLine(user.ToString());
+        return _users.FindAll(i => i.Name.Contains(name, StringComparison.CurrentCultureIgnoreCase));
     }
+
     public void AddBook(Book book)
     {
         try
@@ -43,7 +35,7 @@ class Library
                 return;
             }
             _books.Add(book);
-            NotificationService.SendNotificationOnSucess($"Book '{book.Title}'");
+            NotificationService.SendNotificationOnSucess($"a new book '{book.Title}' has been added");
 
         }
         catch (Exception e)
@@ -51,6 +43,7 @@ class Library
             Console.WriteLine($"{e.Message}");
         }
     }
+
     public void AddUser(User user)
     {
         try
@@ -58,10 +51,11 @@ class Library
             bool id = _users.Any(item => item.Id == user.Id);
             if (id)
             {
-                throw new Exception($"'{user.Name}' is already existing.");
+                NotificationService.SendNotificationOnFailure($"adding user '{user.Name}', thus it is already existing.");
+                return;
             }
             _users.Add(user);
-            Console.WriteLine($"'{user.Name}' has been added successfully!");
+            NotificationService.SendNotificationOnSucess($"A new user '{user.Name}' has been added to");
 
         }
         catch (Exception e)
@@ -77,10 +71,11 @@ class Library
             bool id = _users.Any(item => item.Id == user.Id);
             if (!id)
             {
-                throw new Exception($"'{user.Name}' is not Found!");
+                NotificationService.SendNotificationOnFailure($"deleted user '{user.Name}'");
+                return;
             }
             _users.Remove(user);
-            Console.WriteLine($"'{user.Name}' has deleted successfully!");
+            NotificationService.SendNotificationOnSucess($"'{user.Name}' has deleted from");
 
         }
         catch (Exception e)
@@ -88,6 +83,7 @@ class Library
             Console.WriteLine($"{e.Message}");
         }
     }
+
     public void DeleteBook(Book book)
     {
         try
@@ -95,10 +91,11 @@ class Library
             bool id = _books.Any(item => item.Id == book.Id);
             if (!id)
             {
-                NotificationService.SendNotificationOnFailure($"adding Book '{book.Title}'");
+                NotificationService.SendNotificationOnFailure($"deleted Book '{book.Title}'");
+                return;
             }
             _books.Remove(book);
-            NotificationService.SendNotificationOnSucess($"Book '{book.Title}'");
+            NotificationService.SendNotificationOnSucess($"Book '{book.Title}' has deleted");
 
         }
         catch (Exception e)
@@ -112,10 +109,23 @@ class Library
         List<User> list = [.. _users.OrderBy(i => i.CreatedDate)];
         _users.ForEach(Console.WriteLine);
     }
+
+    // With Pagination 
+    public List<User> GetAllUsers(int pageNumber, int limitPerPage)
+    {
+        return _users.OrderBy(i => i.CreatedDate).Skip((pageNumber - 1) * limitPerPage).Take(limitPerPage).ToList();
+    }
+
     public void GetAllBooks()
     {
         List<Book> list = [.. _books.OrderBy(i => i.CreatedDate)];
         _books.ForEach(Console.WriteLine);
+    }
+
+    // With Pagination 
+    public List<Book> GetAllBooks(int pageNumber, int limitPerPage)
+    {
+        return _books.OrderBy(i => i.CreatedDate).Skip((pageNumber - 1) * limitPerPage).Take(limitPerPage).ToList();
     }
 
 }

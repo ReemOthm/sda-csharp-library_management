@@ -9,6 +9,6 @@ class SMSNotificationService : INotificationService
 
     public void SendNotificationOnSucess(string message)
     {
-        Console.WriteLine($"{message} added to Library. Thank you!\n");
+        Console.WriteLine($"{message} Library. Thank you!\n");
     }
 }
