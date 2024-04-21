@@ -5,7 +5,7 @@ class Library
     private List<User> _users;
     private List<Book> _books;
 
-    public INotificationService NotificationService { get; }
+    private INotificationService _notificationService;
 
     public Library(INotificationService notificationService)
     {
